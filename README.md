@@ -1,132 +1,245 @@
-# DemonTix-Kel 8
+# 🎟️ DemonTix — Kelompok 8
 
-DemonTix adalah aplikasi berbasis web untuk penjualan tiket konser, olahraga, dan wisata, dikembangkan menggunakan **Laravel (backend)** dan **Vue.js (frontend)**.
+**DemonTix** adalah aplikasi berbasis web untuk pemesanan dan penjualan tiket konser, acara olahraga, serta destinasi wisata. Aplikasi ini dikembangkan menggunakan Laravel sebagai backend dan Vue.js sebagai frontend, dengan database MySQL untuk mengelola data aplikasi.
 
----
+## ✨ Fitur Utama
 
-## 🚀 Cara Menjalankan Proyek Ini
+- 🎫 Penjualan dan pemesanan tiket event
+- 🎵 Informasi event konser, olahraga, dan wisata
+- 🖼️ Pengelolaan gambar dan informasi event
+- 💳 Pengelolaan bukti pembayaran
+- 🗄️ Integrasi database MySQL
+- 🔌 Komunikasi frontend dan backend melalui API
 
-### 📁 Struktur Direktori
+## 🛠️ Teknologi yang Digunakan
 
+| Teknologi | Kegunaan |
+|---|---|
+| Laravel | Backend dan REST API |
+| Vue.js | Frontend |
+| MySQL / MariaDB | Database |
+| Axios | HTTP client |
+| SweetAlert2 | Notifikasi dan dialog |
+| Vite | Development server frontend |
+| Composer | Dependency management PHP |
+| npm | Dependency management frontend |
+
+## 📂 Struktur Project
+
+```text
+DemonTix-Kel-8/
+├── backend/
+│   ├── app/
+│   ├── database/
+│   │   ├── migrations/
+│   │   └── ...
+│   ├── public/
+│   ├── routes/
+│   ├── storage/
+│   │   └── app/
+│   │       └── public/
+│   │           ├── bukti_pembayaran/
+│   │           └── events/
+│   ├── .env.example
+│   └── composer.json
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+├── demontix1.sql
+└── README.md
 ```
-project-root/
-├── backend/        # Laravel API
-└── frontend/       # Vue.js frontend
+
+> Nama file SQL dan struktur folder di atas harus disesuaikan dengan nama serta isi repository yang sebenarnya.
+
+## 🚀 Instalasi dan Menjalankan Aplikasi
+
+### Prasyarat
+
+Pastikan perangkat sudah memiliki:
+
+- PHP sesuai versi Laravel yang digunakan
+- Composer
+- Node.js dan npm
+- MySQL atau MariaDB
+- Git
+
+### 1. Clone Repository
+
+```bash
+git clone <URL_REPOSITORY_GITHUB>
+cd DemonTix-Kel-8
 ```
 
----
+Ganti `<URL_REPOSITORY_GITHUB>` dengan URL repository DemonTix milik kelompok.
 
-## 📦 Backend (Laravel)
+### 2. Setup Backend Laravel
 
-### 1. Masuk ke direktori backend
+Masuk ke direktori backend:
+
 ```bash
 cd backend
 ```
 
-### 2. Install dependency Laravel
+Install dependency:
+
 ```bash
 composer install
 ```
 
-### 3. Copy file environment
+Buat file environment dari template:
+
 ```bash
 cp .env.example .env
 ```
 
-### 4. Generate application key
+Jika menggunakan Windows, kamu juga dapat menyalin `.env.example` secara manual menjadi `.env`.
+
+Generate application key:
+
 ```bash
 php artisan key:generate
 ```
 
-### 5. Buat database dan atur `.env`
-- Buat database (misalnya: `demontix1`)
-- Edit `.env`:
-  ```env
-  DB_DATABASE=demontix1
-  DB_USERNAME=root
-  DB_PASSWORD= (isi jika ada password)
-  ```
+### 3. Konfigurasi Database
 
-### 6. Jalankan migrasi
-```bash
-php artisan migrate
+Buat database MySQL sesuai konfigurasi aplikasi, misalnya:
+
+```sql
+CREATE DATABASE demontix;
 ```
 
-### 7. Buat symbolic link untuk akses file upload
+Atur koneksi database di `backend/.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=demontix
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Sesuaikan username dan password dengan konfigurasi MySQL lokal.
+
+### 4. Import Database
+
+Database SQL sudah tersedia di repository.
+
+Jika file SQL bernama `demontix.sql` dan berada di root project, import menggunakan phpMyAdmin:
+
+1. Buka phpMyAdmin.
+2. Pilih database `demontix`.
+3. Buka tab **Import**.
+4. Pilih file `demontix.sql`.
+5. Klik **Import** atau **Go**.
+
+Alternatif melalui terminal, jalankan dari root project:
+
+```bash
+mysql -u root -p demontix < demontix.sql
+```
+
+Jika MySQL tidak menggunakan password, kamu dapat menyesuaikan perintah tersebut dengan konfigurasi lokal.
+
+> **Penting:** Jika database SQL sudah berisi tabel dan data awal, jangan langsung menjalankan `php artisan migrate:fresh`, karena perintah tersebut menghapus tabel yang ada. Pastikan struktur database hasil import sesuai dengan versi kode backend.
+
+### 5. Siapkan File Gambar Event dan Bukti Pembayaran
+
+Folder gambar tersedia di repository. Pastikan file berada pada lokasi yang sesuai dengan struktur Laravel:
+
+```text
+backend/storage/app/public/
+├── bukti_pembayaran/
+└── events/
+```
+
+Jika folder sudah tersedia setelah clone, kamu tidak perlu mengunduhnya lagi dari Google Drive.
+
+Buat symbolic link agar file di storage dapat diakses melalui folder public:
+
 ```bash
 php artisan storage:link
 ```
 
-### 8. Jalankan server Laravel
+Secara default, Laravel akan membuat:
+
+```text
+backend/public/storage
+```
+
+yang mengarah ke:
+
+```text
+backend/storage/app/public
+```
+
+Contoh URL gambar event:
+
+```text
+http://localhost:8000/storage/events/nama-file-gambar.jpg
+```
+
+Ganti `nama-file-gambar.jpg` dengan nama file yang benar-benar tersedia.
+
+### 6. Jalankan Backend
+
+Dari direktori `backend`, jalankan:
+
 ```bash
 php artisan serve
 ```
 
-Akses API di: [http://localhost:8000](http://localhost:8000)
+Backend Laravel biasanya tersedia di:
 
----
+http://localhost:8000
 
-## 🌐 Frontend (Vue.js)
+### 7. Setup Frontend
 
-### 1. Masuk ke direktori frontend
+Buka terminal baru dari root project:
+
 ```bash
 cd frontend
 ```
 
-### 2. Install dependency
+Install dependency:
+
 ```bash
 npm install
 ```
 
-### 3. Jalankan server frontend
+Jalankan frontend:
+
 ```bash
 npm run dev
 ```
 
-Frontend akan berjalan di: [http://localhost:5173](http://localhost:5173)
+Frontend Vue.js biasanya tersedia di:
 
-> Pastikan URL backend Laravel (`http://localhost:8000`) sudah diatur dengan benar di file `.env` atau konfigurasi frontend (`axios`, `vite.config.js`, dsb)
+http://localhost:5173
 
----
+Jika URL backend dikonfigurasi melalui environment variable frontend, pastikan nilainya sesuai dengan alamat server Laravel lokal.
 
-## 📁 Upload Folder
+Contoh konfigurasi jika proyek menggunakan `VITE_API_URL`:
 
-Pastikan folder berikut tersedia untuk menyimpan file gambar:
-
-```
-storage/app/public/bukti_pembayaran/
-storage/app/public/events/
+```env
+VITE_API_URL=http://localhost:8000
 ```
 
-## 🛠️ Tools & Teknologi
-
-- Laravel
-- Vue js
-- Axios
-- SweetAlert2
-- MySQL / MariaDB
-
----
+Gunakan nama variabel yang memang dibaca oleh kode frontend.
 
 ## 👨‍💻 Developer
 
-Kelompok 8 - Mata Kuliah Pemrograman Web  
-Fakultas Ilmu Komputer, Universitas Amikom Yogyakarta
+**Kelompok 8**  
+Mata Kuliah Pemrograman Web  
+Fakultas Ilmu Komputer  
+Universitas Amikom Yogyakarta
 
 ---
 
-## 📷 Preview
-
-> Tambahkan screenshot di sini jika perlu.
-
-## 📂 Akses Folder Gambar
-
-Folder `storage/app/public/bukti_pembayaran/` dan `storage/app/public/events/` *tidak* dimasukkan ke repository karena masuk dalam `.gitignore`.
-
-Jika Anda memerlukan gambar-gambar tersebut (misalnya untuk kebutuhan development atau testing), silakan akses melalui Google Drive berikut:
-
-🔗 [Download Folder Gambar dari Google Drive](https://drive.google.com/drive/folders/1JqxZiiLckcAlzWUC5HIQSFOCCgGevMTZ?usp=drive_link)
-
-Setelah diunduh, pindahkan:
-- Folder `bukti_pembayaran/` ke `backend/storage/app/public/`
-- Folder `events/` ke `backend/storage/app/public/`
+<p align="center">
+  🎟️ DemonTix — Event Ticketing Web Application
+</p>
