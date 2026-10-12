@@ -15,13 +15,15 @@
         <div class="col-md-12 col-lg-8">
           <div class="detail-event">
             <div class="event-banner">
-              <img :src="event.image" alt="Event Image" class="img-fluid" />
+              <!-- PERBAIKAN: Menggunakan getImageUrl -->
+              <img :src="getImageUrl(event.image)" alt="Event Image" class="img-fluid" />
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
               <div class="creator_profile">
                 <div class="creator_img">
-                  <img :src="event.image1" alt="Event Organizer" class="img-fluid" />
+                  <!-- PERBAIKAN: Menggunakan getImageUrl -->
+                  <img :src="getImageUrl(event.image1)" alt="Event Organizer" class="img-fluid" />
                 </div>
                 <div class="creator_name">
                   <label>Penyelenggara</label>
@@ -35,7 +37,7 @@
                 </div>
                 <div class="instagram_profile">
                   <a :href="event.socialLink" target="_blank">
-                    {{ "@" + event.socialLink.split("/").pop() }}
+                    {{ event.socialLink ? "@" + event.socialLink.split("/").pop() : "" }}
                   </a>
                 </div>
               </div>
@@ -197,10 +199,24 @@ export default {
       });
   },
   methods: {
+    // --- FUNGSI HELPER BARU DITAMBAHKAN DI SINI ---
+    getImageUrl(image) {
+      if (!image) return "";
+      if (image.startsWith("http")) return image;
+
+      let cleanPath = image.startsWith("/") ? image.slice(1) : image;
+
+      if (!cleanPath.startsWith("storage/")) {
+        cleanPath = `storage/${cleanPath}`;
+      }
+
+      return `http://127.0.0.1:8000/${cleanPath}`;
+    },
     showTab(tab) {
       this.activeTab = tab;
     },
     formatDate(date) {
+      if (!date) return "";
       return new Date(date).toLocaleDateString("id-ID", {
         day: "numeric",
         month: "long",

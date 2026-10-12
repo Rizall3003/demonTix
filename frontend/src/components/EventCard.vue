@@ -1,15 +1,11 @@
 <template>
   <div class="card event-card text-dark">
-    <router-link
-      :to="`/Detail/${event.id}`"
-      class="text-decoration-none"
-      aria-label="'Lihat detail untuk event ' + event.title"
-    >
-      <img
-        :src="getImageUrl(event.image)"
-        class="card-img-top rounded-top-3 event-image"
-      />
-    </router-link>
+    <!-- Gambar biasa (tidak bisa diklik / tidak ada router-link) -->
+    <img
+      :src="getImageUrl(event.image)"
+      class="card-img-top rounded-top-3 event-image"
+      :alt="event.title"
+    />
 
     <div class="card-body d-flex flex-column event-body">
       <!-- Judul satu baris -->
@@ -34,7 +30,7 @@
         </strong>
       </p>
 
-      <!-- Tombol Beli Tiket -->
+      <!-- Tombol Beli Tiket (Hanya bagian ini yang bisa diklik) -->
       <router-link
         v-if="!isExpired"
         :to="`/Detail/${event.id}`"
@@ -83,11 +79,18 @@ const getLowestTicketPrice = (tickets) => {
   return minPrice.toLocaleString("id-ID");
 };
 
+// Fungsi penanganan URL gambar agar mengarah ke backend Laravel
 const getImageUrl = (image) => {
   if (!image) return "";
-  return image.startsWith("http")
-    ? image
-    : `http://127.0.0.1:8000/storage/${image}`;
+  if (image.startsWith("http")) return image;
+
+  const cleanImage = image.startsWith("/") ? image.slice(1) : image;
+
+  if (cleanImage.startsWith("storage/")) {
+    return `http://127.0.0.1:8000/${cleanImage}`;
+  }
+
+  return `http://127.0.0.1:8000/storage/${cleanImage}`;
 };
 
 const formatDate = (dateStr) => {
@@ -109,6 +112,8 @@ const formatDate = (dateStr) => {
 .event-image {
   height: 7rem;
   object-fit: cover;
+  /* Mencegah kursor berubah menjadi pointer saat di-hover di atas gambar */
+  cursor: default;
 }
 
 .event-body {
