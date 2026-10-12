@@ -70,11 +70,9 @@ Pastikan perangkat sudah memiliki:
 ### 1. Clone Repository
 
 ```bash
-git clone <URL_REPOSITORY_GITHUB>
+git clone https://github.com/Rizall3003/demonTix.git
 cd DemonTix-Kel-8
 ```
-
-Ganti `<URL_REPOSITORY_GITHUB>` dengan URL repository DemonTix milik kelompok.
 
 ### 2. Setup Backend Laravel
 
@@ -147,17 +145,13 @@ Jika MySQL tidak menggunakan password, kamu dapat menyesuaikan perintah tersebut
 
 > **Penting:** Jika database SQL sudah berisi tabel dan data awal, jangan langsung menjalankan `php artisan migrate:fresh`, karena perintah tersebut menghapus tabel yang ada. Pastikan struktur database hasil import sesuai dengan versi kode backend.
 
-### 5. Siapkan File Gambar Event dan Bukti Pembayaran
-
+### 5. Siapkan File Gambar Event
 Folder gambar tersedia di repository. Pastikan file berada pada lokasi yang sesuai dengan struktur Laravel:
 
 ```text
 backend/storage/app/public/
-├── bukti_pembayaran/
 └── events/
 ```
-
-Jika folder sudah tersedia setelah clone, kamu tidak perlu mengunduhnya lagi dari Google Drive.
 
 Buat symbolic link agar file di storage dapat diakses melalui folder public:
 
